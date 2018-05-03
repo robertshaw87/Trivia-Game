@@ -2,6 +2,11 @@
 // declare some variables
 var playerScore, curQuestion, questionsList;
 
+
+var questions;
+
+
+
 var difficultySelect = [questionsBank, questionsBank2];
 
 // returns a random integer between 0 and the argument(inclusive)
@@ -41,6 +46,7 @@ function buttonsArea(str) {
 
 // reset the game, showing the default home screen
 // set all the variables
+// add difficulty select buttons to the buttons area
 function resetGame() {
     playerScore = {
         correct: 0,
@@ -54,13 +60,15 @@ function resetGame() {
         buttons += generateButton(difficultySelect[i].name,"difficulty-button", i);
     }
     buttonsArea(buttons)
-    console.log("Game Reset: " + playerScore);
+    console.log("Game Reset");
 }
 
+// listen for clicks on the difficulty select buttons
 $("#buttons-area").on("click", ".difficulty-button", function () {
     var currButton = $(this);
-    console.log(currButton);
-    console.log(currButton.attr("value"));
+    questionsList = difficultySelect[currButton.attr("value")].qList;
+    shuffleArr(questionsList);
+    console.log(questionsList);    
 }); 
 
 // convert a question object into something that will add its own
