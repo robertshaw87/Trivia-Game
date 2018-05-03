@@ -2,10 +2,7 @@
 // declare some variables
 var playerScore, curQuestion, questionsList;
 
-var difficultySelect = {
-    0:questionsBank,
-    1:questionsBank2
-}
+var difficultySelect = [questionsBank, questionsBank2];
 
 // returns a random integer between 0 and the argument(inclusive)
 function randInt(maxInt){
@@ -23,8 +20,11 @@ function shuffleArr(arr) {
     return arr;
 }
 
-function generateButton(str, id, value=0){
-    return '<button type="button" class="btn btn-dark btn-lg p-3 pr-5 pl-5" id='+id+' value='+value+'>'+str+'</button>';
+function generateButton(str, btnClass, value=3){
+    return '<div class="row mt-3 bg-secondary"><div class="col"></div><div class="button btn-dark btn-lg col-10 p-3 '
+        + btnClass + '" value='
+        + value + '>' 
+        + str + '</div><div class="col"></div></div>';
 }
 
 function titleArea(str) {
@@ -33,6 +33,10 @@ function titleArea(str) {
 
 function messageArea(str) {
     $("#message-area").html(str);
+}
+
+function buttonsArea(str) {
+    $("#buttons-area").html(str);
 }
 
 // reset the game, showing the default home screen
@@ -45,10 +49,19 @@ function resetGame() {
     questionsList = [];
     titleArea("<h1 class='text-center'>Trivia Game</h1>");   
     messageArea('<p>Welcome the to trivia game! Select your difficulty. </p>');
-    buttonsArea('');
-    console.log(generateButton("wee","b"))
-    console.log(playerScore);
+    var buttons = "";
+    for (i=0; i<difficultySelect.length; i++){
+        buttons += generateButton(difficultySelect[i].name,"difficulty-button", i);
+    }
+    buttonsArea(buttons)
+    console.log("Game Reset: " + playerScore);
 }
+
+$("#buttons-area").on("click", ".difficulty-button", function () {
+    var currButton = $(this);
+    console.log(currButton);
+    console.log(currButton.attr("value"));
+}); 
 
 // convert a question object into something that will add its own
 resetGame();
