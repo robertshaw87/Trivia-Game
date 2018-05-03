@@ -53,6 +53,7 @@ function resetGame() {
         incorrect: 0,
         skipped: 0};
     questionsList = [];
+    curQuestion = 0;
     titleArea("<h1 class='text-center'>Trivia Game</h1>");   
     messageArea('<p>Welcome the to trivia game! Select your difficulty. </p>');
     var buttons = "";
@@ -63,13 +64,19 @@ function resetGame() {
     console.log("Game Reset");
 }
 
+function nextQuestion () {
+    titleArea(questionsList[currQuestion].q);
+    var tempArr = [];
+    // need to add logic to handle next question, 
+}
+
 // listen for clicks on the difficulty select buttons
 $("#buttons-area").on("click", ".difficulty-button", function () {
     var currButton = $(this);
     questionsList = difficultySelect[currButton.attr("value")].qList;
     shuffleArr(questionsList);
-    console.log(questionsList);    
-}); 
+    nextQuestion();
+});
 
 // convert a question object into something that will add its own
 resetGame();
