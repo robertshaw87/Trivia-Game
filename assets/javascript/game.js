@@ -1,11 +1,17 @@
-
 // declare some variables
-var playerScore, curQuestion, questionsList, questionsIndex;
+
+// object to store the player's score
+var playerScore = {
+    correct: 0,
+    incorrect: 0,
+    skipped: 0
+}
+
+var curQuestion, questionsList, questionsIndex;
 
 
 var questions, maxQuestions;
 maxQuestions = 3;
-
 
 var difficultySelect = [questionsBank, questionsBank2];
 
@@ -25,6 +31,43 @@ function shuffleArr(arr) {
     return arr;
 }
 
+// Timer object for the questions countdown
+// time allotted is how much time i want to give the player per question
+
+var timer = {
+    timeAllotted: 3,
+    timerCount: 0,
+    timerPointer: false,
+    start: function() {
+        clearInterval(timer.timerPointer);
+        timer.timerCount = timer.timeAllotted;
+        timer.timerPointer = setInterval(timer.decrement, 1000);
+        $("#message-area").html($("<h5>").html("Time Remaining: " + timer.timerCount));
+    },
+    stop: function() {
+        clearInterval(timer.timerPointer);
+    },
+    decrement: function() {
+        console.log(timer.timerCount);
+        console.log(timer)
+        timer.timerCount -= 1;
+        if (timer.timerCount<0){
+            $("#buttons-area").empty()
+            $("#message-area").html("Time's up!")
+            timer.stop();
+            playerScore.skipped += 1;
+            setTimeout(questionWrong, 1000);
+        } else {
+            $("#message-area").html($("<h5>").html("Time Remaining: " + timer.timerCount));
+        }
+    }
+}
+
+
+// generate a centered button div
+    // takes in the string and the class you want on the button
+    // will carry one data value that defaults to false if not provided
+    // 4th argument will be the id you want for the button, also optional
 function generateButton(str, btnClass, data=false, btnID=""){
     var tempButtonWrap = $("<div>").attr("class", "row mt-3 bg-secondary");
     var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-10 p-3");
@@ -68,7 +111,7 @@ function nextQuestion() {
     console.log(curQuestion);
     $("#buttons-area").empty();
     $("#message-area").empty();
-    $("#title-area").html(curQuestion.q);
+    $("#title-area").html($("<h2>").html(curQuestion.q));
     shuffleArr(curQuestion.s);
     console.log(curQuestion.s);
     var solutionNum = randInt(3);
@@ -79,6 +122,21 @@ function nextQuestion() {
             $("#buttons-area").append(generateButton(curQuestion.a,"answer-button", true, "solution-button"));
         }
     }
+    timer.start();
+}
+
+function questionWrong() {
+    $("#message-area").empty();
+    // var tempDiv = $("<h4>").attr("class", "text-center");
+    // tempDiv.html();
+    $("#message-area").html(($("<h4>").attr("class", "text-center")).html("The correct answer was " + curQuestion.a));
+    $("#buttons-area").empty();
+    $("#buttons-area").html(curQuestion.blurb);
+
+}
+
+function questionRight() {
+    console.log("question right!");
 }
 
 // wait for the dom to finish loading before doing the work
