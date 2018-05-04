@@ -31,8 +31,6 @@ var timer = {
     },
     // this is the timer setup
     decrement: function() {
-        console.log(timer.timerCount);
-        console.log(timer)
         timer.timerCount -= 1;
         if (timer.timerCount<0){
             $("#buttons-area").empty()
@@ -98,6 +96,9 @@ function resetGame() {
         questionsList : [],
         curQuestion: false
     }
+    $("#title-area").empty();
+    $("#message-area").empty();
+    $("#buttons-area").empty();
     $("#title-area").html("<h1 class='text-center'>Trivia Game</h1>");   
     $("#message-area").html('<p>Welcome the to trivia game! Select your difficulty. </p>');
     for (var i=0; i<difficultySelect.length; i++){
@@ -108,6 +109,7 @@ function resetGame() {
 
 // find the next question in the array and display it
 function nextQuestion() {
+    console.log(questions.questionsIndex);
     if (questions.questionsIndex < questions.maxQuestions) {
         questions.curQuestion = questions.questionsList[questions.questionsIndex];
         $("#buttons-area").empty();
@@ -123,7 +125,7 @@ function nextQuestion() {
                 $("#buttons-area").append(generateButton(questions.curQuestion.a,"answer-button", true, "solution-button"));
             }
         }
-        questions.questionIndex--;
+        questions.questionsIndex += 1;
         timer.start();
     } else {
         completeGame();
@@ -132,7 +134,7 @@ function nextQuestion() {
 
 // page display on incorrect answer
 function questionWrong() {
-    playerScore.wrong -= 1;
+    playerScore.wrong += 1;
     $("#message-area").empty();
     $("#message-area").html(($("<h4>").attr("class", "text-center")).html("The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
@@ -141,13 +143,33 @@ function questionWrong() {
 }
 
 function questionRight() {
-    console.log("question right!");
+    playerScore.correct += 1;
+    $("#message-area").empty();
+    $("#message-area").html(($("<h4>").attr("class", "text-center")).html("You were right! The correct answer was " + questions.curQuestion.a));
+    $("#buttons-area").empty();
+    $("#buttons-area").html(questions.curQuestion.blurb);
+    setTimeout(nextQuestion, 3000);
+}
+
+function completeGame() {
+    $("#title-area").empty();
+    $("#message-area").empty();
+    $("#buttons-area").empty();
+    $("#title-area").html("You've completed the test!");
+    $("#message-area").html($("<p>").html("Out of " + questions.maxQuestions + " questions, you answered:"));
+    $("#message-area").append($("<p>").html(playerScore.correct + " questions correctly, " + playerScore.wrong + " incorrectly,"));
+    $("#message-area").append($("<p>").html("and skipped " + playerScore.skipped + " questions."));
+    $("#buttons-area").empty();
+    $("#buttons-area").append(generateButton("Play Again","reset-button"));
 }
 
 // wait for the dom to finish loading before doing the work
 $(document).ready(function() {
 
     resetGame();
+
+    // reset the game when the reset button is clicked
+    $(document).on("click", ".reset-button", resetGame);
 
     // listen for clicks on the difficulty select buttons
     $(document).on("click", ".difficulty-button", function () {
@@ -159,6 +181,17 @@ $(document).ready(function() {
         shuffleArr(questions.questionsList);
         console.log(questions.questionsList);
         nextQuestion();
+    });
+
+
+    $(document).on("click", ".answer-button", function () {
+        var currButton = $(this);
+        timer.stop();
+        if (currButton.data("correct")) {
+            questionRight();
+        } else {
+            questionWrong();
+        }
     });
 
 });
