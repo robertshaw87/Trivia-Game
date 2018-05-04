@@ -37,43 +37,83 @@ button:hover {
     border-color: black;
 }
 
-.card-img-overlay {
-    
+@keyframes button-hover {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+.card {
+    background-color: rgba(0,0,0,.5);
+}
+
+/* center the text in the middle of the top or bottom of the parent object */
+.centered-top, .centered-bottom{
+    position: absolute;
+    width: 100%;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.centered-top{
+    top:0px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.centered-bottom{
+    bottom: 0px;
+    left: 50%;
+    font-weight: bold;
+    transform: translate(-50%, 0%);
 }
 
 .body-flip-vert {
     animation-name: body-flip-vert;
-    animation-duration: .6s;
+    animation-duration: .4s;
+    animation-iteration-count: 1;
 }
 
 .body-flip-horiz {
     animation-name: body-flip-horiz;
-    animation-duration: .6s;
+    animation-duration: .4s;
+    animation-iteration-count: 1;
 }
 
 .left-right{
     animation-name: left-right;
     animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 .right-left{
     animation-name: right-left;
     animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 .bottom-up {
     animation-name: bottom-up;
     animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 .top-down {
     animation-name: top-down;
     animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 .grow {
     animation-name: grow;
     animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 @keyframes body-flip-vert {

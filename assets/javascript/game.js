@@ -154,18 +154,11 @@ function evaluateAnswer(answer=false) {
     $("#message-area").html(($("<div>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
     var tempDiv = $("<div>")
-    tempDiv.attr("class", "card text-white p-0 col-12")
-    tempDiv.append($("<img>").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
-    tempDiv.append($("<div>").attr("class", "card-img-overlay").append($("<p>").text(questions.curQuestion.blurb)));
+    tempDiv.attr("class", "card text-white p-0 col-12 position-relative")
+    tempDiv.append($("<div>").attr("class", "card-body").append($("<p>").attr("class", "").text(questions.curQuestion.blurb)));
+    tempDiv.append($("<img>").attr("class", "card-img-bottom").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
     $("#buttons-area").append(tempDiv);
-    // tempDiv = $("<img>");
-    // tempDiv.attr("src", questions.curQuestion.img);
-    // tempDiv.attr("alt", questions.curQuestion.a)
-    // tempDiv.attr("width", "100%");
-    // tempDiv.attr("height", "auto");
-    // tempDiv.attr("class", "col-12 col-sm-5 col-md-3 float-right")
-    // $("#buttons-area").append(tempDiv);
-    setTimeout(nextQuestion, 3000);
+    setTimeout(nextQuestion, 5000);
 }
 
 function completeGame() {
@@ -178,9 +171,9 @@ function completeGame() {
     $("#buttons-area").empty();
     $("#buttons-area").append(generateButton("Play Again","reset-button").addClass(randomAnimation()));
     if (playerScore.correct > (playerScore.wrong + playerScore.skipped)){
-        ($("#title-area").html("<h1 class='text-center'>The love for all living creatures is the most noble attribute of man.</h1><h2 class='text-center'>-Charles Darwin</h2>")).addClass("grow");
+        ($("#title-area").html("<h2 class='text-center'>The love for all living creatures is the most noble attribute of man.</h2><h2 class='text-center'>-Charles Darwin</h2>")).addClass("grow");
     } else {
-        $("#title-area").html("<h1 class='text-center'>Congratulations you've completed the quiz! See if you can get a better score next time!</h1>");
+        $("#title-area").html("<h2 class='text-center'>Congratulations you've completed the quiz! See if you can get a better score next time!</h2>");
     }
 }
 
