@@ -186,9 +186,27 @@ function evaluateAnswer(answer=false) {
     // add new div to the display area
     $("#buttons-area").append(tempDiv);
     // make a button that can pause the current countdown and look at the stuff on the solution page
-    $("#buttons-area").append(generateButton("Pause", "next-button", false))
+    $("#buttons-area").append(generateButton("Pause", "next-button", false));
     // set the page to automatically move to the next question after 8 seconds
     timeOut = setTimeout(nextQuestion, 8000);
+}
+
+// remove the pause button into the next question button
+// this refreshes the info page in order to start an animation
+function pauseButton() {
+    $("#buttons-area").empty();
+    // create a new empty div
+    var tempDiv = $("<div>")
+    // make that div a card
+    tempDiv.attr("class", "card text-white p-0 col-12 position-relative")
+    // add the explanation text of the question from the questions object to our new div
+    tempDiv.append($("<div>").attr("class", "card-body").append($("<p>").attr("class", "").text(questions.curQuestion.blurb)));
+    // add the image from the questions obj
+    tempDiv.append($("<img>").attr("class", "card-img-bottom").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
+    // add new div to the display area
+    $("#buttons-area").append(tempDiv);
+    // make a button that can pause the current countdown and look at the stuff on the solution page
+    $("#buttons-area").append(generateButton("Next Question", "next-button", true).addClass("pulse"));
 }
 
 // logic for when the game finishes
@@ -245,13 +263,12 @@ $(document).ready(function() {
     // will swap out the text in the button and change the background color the first time it is clicked
     $(document).on("click", ".next-button", function () {
         clearTimeout(timeOut);
-        console.log(typeof $(this).data("correct"));
         if ($(this).attr("data-correct") === "true") {
+            // render the next questions
             nextQuestion();
         } else {
-            $(this).attr("data-correct", true);
-            $(this).text("Next Question");
-            $(this).css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ", 0.7");
+            // change the pause button into the next question button
+            pauseButton();
         }
     });
 

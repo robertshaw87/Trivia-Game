@@ -46,6 +46,12 @@ button:hover {
     background-color: rgba(0,0,0,.5);
 }
 
+.pulse {
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
 
 /* classes for my custom animations, used as part of function to give random animations */
 .body-flip-vert {
@@ -147,6 +153,18 @@ button:hover {
 @keyframes grow {
     0%{
         transform: scale(0);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.1);
     }
     100%{
         transform: scale(1);
