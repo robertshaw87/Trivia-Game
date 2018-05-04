@@ -23,6 +23,7 @@ var animations =["body-flip-vert", "body-flip-horiz", "left-right", "right-left"
 var timer = {
     timeAllotted: 7,
     timerCount: 0,
+    totalTime: 0,
     timerPointer: false,
     start: function() {
         clearInterval(timer.timerPointer);
@@ -35,6 +36,7 @@ var timer = {
     },
     // this is the timer setup
     decrement: function() {
+        timer.totalTime += 1;
         timer.timerCount -= 1;
         if (timer.timerCount<0){
             $("#buttons-area").empty()
@@ -171,6 +173,7 @@ function completeGame() {
     $("#message-area").html($("<p>").html("Out of " + questions.maxQuestions + " questions, you answered:"));
     $("#message-area").append($("<p>").html(playerScore.correct + " questions correctly, " + playerScore.wrong + " incorrectly,"));
     $("#message-area").append($("<p>").html("and skipped " + playerScore.skipped + " questions."));
+    $("#message-area").append($("<p>").html("It took you " + timer.totalTime + " seconds to answer all the questions."));
     $("#buttons-area").empty();
     $("#buttons-area").append(generateButton("Play Again","reset-button").addClass(randomAnimation()));
     if (playerScore.correct > (playerScore.wrong + playerScore.skipped)){

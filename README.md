@@ -6,11 +6,11 @@ How much do you know about our friends in the animal kingdom? From man's best fr
 
 Open up the [project link](https://robertshaw87.github.io/Trivia-Game/) and you should be able to see the example webpage shown below:
 
-![Trivia Game](assets/images/readme-game.png "Trivia Game")
+![Animal Facts!](assets/images/readme-game.png "Animal Facts!")
 
 Select the difficulty of the questions you want to tackle. Then answer the quiz to the best of your ability and see how well you did. Keep the time limit in mind!
 
-As you learn more about our furry and scaley roommates, play again to see what new questions may arise or challenge yourself to a higher difficulty. 
+As you learn more about our furry and scaley roommates, play again to see what new questions may arise, get a better time, or challenge yourself to a higher difficulty. 
 
 ### Prerequisites
 
