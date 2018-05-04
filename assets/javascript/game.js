@@ -102,7 +102,7 @@ function generateButton(str, btnClass, data=false, btnID=""){
     tempButton.attr("data-correct", data);
     tempButton.text(str);
     // adding a random background color to the button
-    tempButton.css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ", 0.7");
+    tempButton.css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ", 0.8");
     tempButton.addClass(randomAnimation());
     // add the padding on both sides of the button
     tempButtonWrap.append($("<div>").attr("class","col"));
