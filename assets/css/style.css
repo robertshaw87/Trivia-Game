@@ -1,12 +1,13 @@
+/* set the background image and center it */
 body {
     background-image: url("../images/background.png");
     background-color: black;
     background-position: 50% 0%; 
     background-repeat: no-repeat;
     background-size: cover;
-    /* min-width: 360px; */
 }
 
+/* set the style for the headers */
 h1 {
     font-family: 'Cabin Sketch', cursive;
     font-size: 60px;
@@ -19,61 +20,34 @@ h2 {
     font-weight: bold;
 }
 
+/* text font and translucent black for the main message area */
 #message-area {
     background-color: rgba(0,0,0,.5);
     font-family: 'Special Elite', cursive;
 }
 
+/* text font for the buttons */
 button {
     font-family: 'Fredericka the Great', cursive;
     font-weight: bold;
 }
 
+/* add a shadow like border to the buttons when hovered */
 button:hover {
     border: 0px;
     border-bottom: 5px;
     border-right: 3px;
     border-style: solid;
-    border-color: black;
+    border-color: rgba(30, 30, 30, .8);
 }
 
-@keyframes button-hover {
-    0%{
-        transform: scale(1);
-    }
-    50%{
-        transform: scale(1.1);
-    }
-    100%{
-        transform: scale(1);
-    }
-}
-
+/* background color to help with reading text */
 .card {
     background-color: rgba(0,0,0,.5);
 }
 
-/* center the text in the middle of the top or bottom of the parent object */
-.centered-top, .centered-bottom{
-    position: absolute;
-    width: 100%;
-    padding: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-}
 
-.centered-top{
-    top:0px;
-    left: 50%;
-    transform: translate(-50%, 0%);
-}
-
-.centered-bottom{
-    bottom: 0px;
-    left: 50%;
-    font-weight: bold;
-    transform: translate(-50%, 0%);
-}
-
+/* classes for my custom animations, used as part of function to give random animations */
 .body-flip-vert {
     animation-name: body-flip-vert;
     animation-duration: .4s;
@@ -116,6 +90,7 @@ button:hover {
     animation-iteration-count: 1;
 }
 
+/* custom animations, names correspond to classes */
 @keyframes body-flip-vert {
     50%{
         transform: rotateX(180deg);
