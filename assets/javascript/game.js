@@ -14,6 +14,8 @@ var questions = {
 
 var difficultySelect = [questionsBank, questionsBank2];
 
+var timeOut, nextButton;
+
 var animations =["body-flip-vert", "body-flip-horiz", "left-right", "right-left", "bottom-up", "top-down", "grow"];
 
 // Timer object for the questions countdown
@@ -88,7 +90,7 @@ function generateButton(str, btnClass, data=false, btnID=""){
     tempButton.attr("data-correct", data);
     tempButton.text(str);
     // adding a background color to the button
-    tempButton.css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ",0.7");
+    tempButton.css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ", 0.7");
     tempButton.addClass(randomAnimation());
     // add the padding on both sides of the button
     tempButtonWrap.append($("<div>").attr("class","col"));
@@ -158,7 +160,8 @@ function evaluateAnswer(answer=false) {
     tempDiv.append($("<div>").attr("class", "card-body").append($("<p>").attr("class", "").text(questions.curQuestion.blurb)));
     tempDiv.append($("<img>").attr("class", "card-img-bottom").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
     $("#buttons-area").append(tempDiv);
-    setTimeout(nextQuestion, 5000);
+    $("#buttons-area").append(generateButton("Pause", "next-button", false))
+    timeOut = setTimeout(nextQuestion, 8000);
 }
 
 function completeGame() {
@@ -196,11 +199,21 @@ $(document).ready(function() {
         nextQuestion();
     });
 
-
     $(document).on("click", ".answer-button", function () {
         var currButton = $(this);
         timer.stop();
-        evaluateAnswer(currButton.data("correct"))
+        evaluateAnswer(currButton.data("correct"));
+    });
+
+    $(document).on("click", ".next-button", function () {
+        clearTimeout(timeOut);
+        console.log(typeof $(this).data("correct"));
+        if ($(this).attr("data-correct") === "true") {
+            nextQuestion();
+        } else {
+            $(this).attr("data-correct", true);
+            $(this).text("Next Question");
+        }
     });
 
 });
