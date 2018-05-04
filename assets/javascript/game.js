@@ -4,6 +4,7 @@ var playerScore, curQuestion, questionsList, questionsIndex;
 
 
 var questions, maxQuestions;
+maxQuestions = 3;
 
 
 var difficultySelect = [questionsBank, questionsBank2];
@@ -24,10 +25,11 @@ function shuffleArr(arr) {
     return arr;
 }
 
-function generateButton(str, btnClass, data=false){
+function generateButton(str, btnClass, data=false, btnID=""){
     var tempButtonWrap = $("<div>").attr("class", "row mt-3 bg-secondary");
     var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-10 p-3");
     tempButton.addClass(btnClass);
+    tempButton.attr("id", btnID);
     tempButton.attr("data-correct", data);
     tempButton.text(str);
     tempButtonWrap.prepend($("<div>").addClass("col"));
@@ -41,17 +43,6 @@ function generateButton(str, btnClass, data=false){
     //     + str + '</div><div class="col"></div></div>';
 }
 
-function titleArea(str) {
-    $("#title-area").html(str);
-}
-
-function messageArea(str) {
-    $("#message-area").html(str);
-}
-
-function buttonsArea(str) {
-    $("#buttons-area").html(str);
-}
 
 // reset the game, showing the default home screen
 // set all the variables
@@ -63,9 +54,9 @@ function resetGame() {
         skipped: 0};
     questionsList = [];
     questionsIndex = 0;
-    titleArea("<h1 class='text-center'>Trivia Game</h1>");   
-    messageArea('<p>Welcome the to trivia game! Select your difficulty. </p>');
-    for (i=0; i<difficultySelect.length; i++){
+    $("#title-area").html("<h1 class='text-center'>Trivia Game</h1>");   
+    $("#message-area").html('<p>Welcome the to trivia game! Select your difficulty. </p>');
+    for (var i=0; i<difficultySelect.length; i++){
         $("#buttons-area").append(generateButton(difficultySelect[i].name,"difficulty-button", i));
     }
     console.log("Game Reset");
@@ -73,12 +64,21 @@ function resetGame() {
 
 // find the next question in the array and display it
 function nextQuestion() {
-    var curQuestion = questionsList[questionsIndex];
+    curQuestion = questionsList[questionsIndex];
     console.log(curQuestion);
-    titleArea(curQuestion.q);
-    var tempArray
-    // for 
-    // buttonsArea()
+    $("#buttons-area").empty();
+    $("#message-area").empty();
+    $("#title-area").html(curQuestion.q);
+    shuffleArr(curQuestion.s);
+    console.log(curQuestion.s);
+    var solutionNum = randInt(3);
+    for (var i=0; i<4; i++){
+        if (i !== solutionNum){
+            $("#buttons-area").append(generateButton(curQuestion.s[i],"answer-button", false));
+        } else {
+            $("#buttons-area").append(generateButton(curQuestion.a,"answer-button", true, "solution-button"));
+        }
+    }
 }
 
 // wait for the dom to finish loading before doing the work
@@ -94,7 +94,7 @@ $(document).ready(function() {
         questionsList = difficultySelect[parseInt(currButton.attr("data-correct"))].qList;
         // // randomize the questions
         shuffleArr(questionsList);
-        console.log(questionsList)
+        console.log(questionsList);
         nextQuestion();
     });
 
