@@ -4,6 +4,7 @@ body {
     background-position: 50% 0%; 
     background-repeat: no-repeat;
     background-size: cover;
+    /* min-width: 360px; */
 }
 
 h1 {
@@ -12,9 +13,32 @@ h1 {
     font-weight: bold;
 }
 
+h2 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 30px;
+    font-weight: bold;
+}
+
 #message-area {
     background-color: rgba(0,0,0,.5);
     font-family: 'Special Elite', cursive;
+}
+
+button {
+    font-family: 'Fredericka the Great', cursive;
+    font-weight: bold;
+}
+
+button:hover {
+    border: 0px;
+    border-bottom: 5px;
+    border-right: 3px;
+    border-style: solid;
+    border-color: black;
+}
+
+.card-img-overlay {
+    
 }
 
 .body-flip-vert {
@@ -24,6 +48,31 @@ h1 {
 
 .body-flip-horiz {
     animation-name: body-flip-horiz;
+    animation-duration: .6s;
+}
+
+.left-right{
+    animation-name: left-right;
+    animation-duration: .6s;
+}
+
+.right-left{
+    animation-name: right-left;
+    animation-duration: .6s;
+}
+
+.bottom-up {
+    animation-name: bottom-up;
+    animation-duration: .6s;
+}
+
+.top-down {
+    animation-name: top-down;
+    animation-duration: .6s;
+}
+
+.grow {
+    animation-name: grow;
     animation-duration: .6s;
 }
 
@@ -42,5 +91,49 @@ h1 {
     }
     100%{
         transform: rotateY(360deg);
+    }
+}
+@keyframes left-right {
+    0%{
+        transform: translateX(200%);
+    }
+    100%{
+        transform: translateX(0%);
+    }
+}
+
+@keyframes right-left {
+    0%{
+        transform: translateX(-200%);
+    }
+    100%{
+        transform: translateX(0%);
+    }
+}
+
+@keyframes bottom-up {
+    0%{
+        transform: translateY(200%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+
+@keyframes top-down {
+    0%{
+        transform: translateY(-200%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
+}
+
+@keyframes grow {
+    0%{
+        transform: scale(0);
+    }
+    100%{
+        transform: scale(1);
     }
 }

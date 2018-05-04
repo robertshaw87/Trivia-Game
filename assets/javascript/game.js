@@ -8,16 +8,18 @@ var playerScore = {
 
 var questions = {
     questionsIndex : 0,
-    maxQuestions: 3,
+    maxQuestions: 6,
     questionsList : [],
     curQuestion: false}
 
 var difficultySelect = [questionsBank, questionsBank2];
 
+var animations =["body-flip-vert", "body-flip-horiz", "left-right", "right-left", "bottom-up", "top-down", "grow"];
+
 // Timer object for the questions countdown
 // time allotted is how much time i want to give the player per question
 var timer = {
-    timeAllotted: 2,
+    timeAllotted: 7,
     timerCount: 0,
     timerPointer: false,
     start: function() {
@@ -62,6 +64,16 @@ function shuffleArr(arr) {
     return arr;
 }
 
+function randomAnimation() {
+    return animations[randInt(animations.length - 1)];
+}
+
+function clearAnimation(targetDiv) {
+    for (var i=0; i<animations.length; i++){
+        targetDiv.removeClass(animations[i]);
+    }
+}
+
 // generate a centered button div
     // takes in the string and the class you want on the button
     // will carry one data value that defaults to false if not provided
@@ -70,11 +82,14 @@ function generateButton(str, btnClass, data=false, btnID=""){
     // make the wrapper we're returning that centers the button
     var tempButtonWrap = $("<div>").attr("class", "row mt-3");
     // this is the actual button
-    var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-md-6 col-8 p-3");
+    var tempButton = $("<button>").attr("class","btn text-light btn-lg col-md-6 col-8 p-3");
     tempButton.addClass(btnClass);
     tempButton.attr("id", btnID);
     tempButton.attr("data-correct", data);
     tempButton.text(str);
+    // adding a background color to the button
+    tempButton.css("background-color", "rgba(" + randInt(90) + "," + randInt(90) + "," + randInt(90) + ",0.7");
+    tempButton.addClass(randomAnimation());
     // add the padding on both sides of the button
     tempButtonWrap.append($("<div>").attr("class","col"));
     tempButtonWrap.append(tempButton);
@@ -86,30 +101,30 @@ function generateButton(str, btnClass, data=false, btnID=""){
 // set all the variables
 // add difficulty select buttons to the buttons area
 function resetGame() {
-    playerScore = {
-        correct: 0,
-        wrong: 0,
-        skipped: 0};
-    questions = {
-        questionsIndex : 0,
-        maxQuestions: 3,
-        questionsList : [],
-        curQuestion: false
-    }
+    playerScore.correct = 0;
+    playerScore.wrong = 0;
+    playerScore.skipped = 0;
+    questions.questionsIndex = 0;
+    questions.questionsList = [];
+    questions.curQuestion = false;
     $("#title-area").empty();
     $("#message-area").empty();
     $("#buttons-area").empty();
-    $("#title-area").html("<h1 class='text-center col'>Animal Facts!</h1>");   
+    clearAnimation($("#title-area"));
+    clearAnimation($("#trivia-body"));
+    $("#title-area").html("<h1 class='text-center'>Animal Facts!</h1>");   
     $("#message-area").html('<p>Welcome the to trivia game! Select your difficulty. </p>');
     for (var i=0; i<difficultySelect.length; i++){
-        $("#buttons-area").append(generateButton(difficultySelect[i].name,"difficulty-button", i));
+        var tempButton = generateButton(difficultySelect[i].name,"difficulty-button", i);
+        tempButton.addClass(randomAnimation());
+        $("#buttons-area").append(tempButton);
+        
     }
 }
 
 // find the next question in the array and display it
 function nextQuestion() {
-    $("#trivia-body").removeClass(".body-flip-horiz");
-    $("#trivia-body").removeClass(".body-flip-vert");
+    clearAnimation($("#trivia-body"));
     if (questions.questionsIndex < questions.maxQuestions) {
         questions.curQuestion = questions.questionsList[questions.questionsIndex];
         $("#buttons-area").empty();
@@ -134,10 +149,22 @@ function nextQuestion() {
 // page display on answer, passed true on correct, defaults to incorrect answer
 function evaluateAnswer(answer=false) {
     (answer ? playerScore.correct += 1 : playerScore.wrong += 1);
+    $("#trivia-body").addClass(randomAnimation());
     $("#message-area").empty();
     $("#message-area").html(($("<div>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
-    $("#buttons-area").html(questions.curQuestion.blurb);
+    var tempDiv = $("<div>")
+    tempDiv.attr("class", "card text-white p-0 col-12")
+    tempDiv.append($("<img>").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
+    tempDiv.append($("<div>").attr("class", "card-img-overlay").append($("<p>").text(questions.curQuestion.blurb)));
+    $("#buttons-area").append(tempDiv);
+    // tempDiv = $("<img>");
+    // tempDiv.attr("src", questions.curQuestion.img);
+    // tempDiv.attr("alt", questions.curQuestion.a)
+    // tempDiv.attr("width", "100%");
+    // tempDiv.attr("height", "auto");
+    // tempDiv.attr("class", "col-12 col-sm-5 col-md-3 float-right")
+    // $("#buttons-area").append(tempDiv);
     setTimeout(nextQuestion, 3000);
 }
 
@@ -145,12 +172,16 @@ function completeGame() {
     $("#title-area").empty();
     $("#message-area").empty();
     $("#buttons-area").empty();
-    $("#title-area").html("You've completed the test!");
     $("#message-area").html($("<p>").html("Out of " + questions.maxQuestions + " questions, you answered:"));
     $("#message-area").append($("<p>").html(playerScore.correct + " questions correctly, " + playerScore.wrong + " incorrectly,"));
     $("#message-area").append($("<p>").html("and skipped " + playerScore.skipped + " questions."));
     $("#buttons-area").empty();
-    $("#buttons-area").append(generateButton("Play Again","reset-button"));
+    $("#buttons-area").append(generateButton("Play Again","reset-button").addClass(randomAnimation()));
+    if (playerScore.correct > (playerScore.wrong + playerScore.skipped)){
+        ($("#title-area").html("<h1 class='text-center'>The love for all living creatures is the most noble attribute of man.</h1><h2 class='text-center'>-Charles Darwin</h2>")).addClass("grow");
+    } else {
+        $("#title-area").html("<h1 class='text-center'>Congratulations you've completed the quiz! See if you can get a better score next time!</h1>");
+    }
 }
 
 // wait for the dom to finish loading before doing the work
