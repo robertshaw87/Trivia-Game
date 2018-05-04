@@ -7,8 +7,8 @@
     animation-duration: .6s;
 }
 
-.body-flip-vert {
-    animation-name: body-flip-vert;
+.body-flip-horiz {
+    animation-name: body-flip-horiz;
     animation-duration: .6s;
 }
 

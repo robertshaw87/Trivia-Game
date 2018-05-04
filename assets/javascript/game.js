@@ -39,7 +39,7 @@ var timer = {
             playerScore.skipped += 1;
             // reduce the wrong count because we're increasing it on the function call
             playerScore.wrong -= 1;
-            setTimeout(questionWrong, 1000);
+            setTimeout(evaluateAnswer, 1000);
         } else {
             $("#message-area").html($("<h5>").html("Time Remaining: " + timer.timerCount));
         }
@@ -104,19 +104,18 @@ function resetGame() {
     for (var i=0; i<difficultySelect.length; i++){
         $("#buttons-area").append(generateButton(difficultySelect[i].name,"difficulty-button", i));
     }
-    console.log("Game Reset");
 }
 
 // find the next question in the array and display it
 function nextQuestion() {
-    console.log(questions.questionsIndex);
+    $("#trivia-body").removeClass(".body-flip-horiz");
+    $("#trivia-body").removeClass(".body-flip-vert");
     if (questions.questionsIndex < questions.maxQuestions) {
         questions.curQuestion = questions.questionsList[questions.questionsIndex];
         $("#buttons-area").empty();
         $("#message-area").empty();
         $("#title-area").html($("<h2>").html(questions.curQuestion.q));
         shuffleArr(questions.curQuestion.s);
-        console.log(questions.curQuestion.s);
         var solutionNum = randInt(3);
         for (var i=0; i<4; i++){
             if (i !== solutionNum){
@@ -132,23 +131,15 @@ function nextQuestion() {
     }
 }
 
-// page display on incorrect answer
-function questionWrong() {
-    playerScore.wrong += 1;
+// page display on answer, passed true on correct, defaults to incorrect answer
+function evaluateAnswer(answer=false) {
+    (answer ? playerScore.correct += 1 : playerScore.wrong += 1);
     $("#message-area").empty();
-    $("#message-area").html(($("<h4>").attr("class", "text-center")).html("The correct answer was " + questions.curQuestion.a));
+    $("#message-area").html(($("<h4>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
     $("#buttons-area").html(questions.curQuestion.blurb);
     setTimeout(nextQuestion, 3000);
-}
 
-function questionRight() {
-    playerScore.correct += 1;
-    $("#message-area").empty();
-    $("#message-area").html(($("<h4>").attr("class", "text-center")).html("You were right! The correct answer was " + questions.curQuestion.a));
-    $("#buttons-area").empty();
-    $("#buttons-area").html(questions.curQuestion.blurb);
-    setTimeout(nextQuestion, 3000);
 }
 
 function completeGame() {
@@ -179,7 +170,6 @@ $(document).ready(function() {
         questions.questionsList = difficultySelect[parseInt(currButton.attr("data-correct"))].qList;
         // // randomize the questions
         shuffleArr(questions.questionsList);
-        console.log(questions.questionsList);
         nextQuestion();
     });
 
@@ -187,11 +177,7 @@ $(document).ready(function() {
     $(document).on("click", ".answer-button", function () {
         var currButton = $(this);
         timer.stop();
-        if (currButton.data("correct")) {
-            questionRight();
-        } else {
-            questionWrong();
-        }
+        evaluateAnswer(currButton.data("correct"))
     });
 
 });
