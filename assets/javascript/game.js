@@ -34,7 +34,7 @@ var timer = {
         timer.timerCount -= 1;
         if (timer.timerCount<0){
             $("#buttons-area").empty()
-            $("#message-area").html("Time's up!")
+            $("#message-area").html($("<h5>").html("Time's up!"));
             timer.stop();
             playerScore.skipped += 1;
             // reduce the wrong count because we're increasing it on the function call
@@ -68,17 +68,17 @@ function shuffleArr(arr) {
     // 4th argument will be the id you want for the button, also optional
 function generateButton(str, btnClass, data=false, btnID=""){
     // make the wrapper we're returning that centers the button
-    var tempButtonWrap = $("<div>").attr("class", "row mt-3 bg-secondary");
+    var tempButtonWrap = $("<div>").attr("class", "row mt-3");
     // this is the actual button
-    var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-10 p-3");
+    var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-md-6 col-8 p-3");
     tempButton.addClass(btnClass);
     tempButton.attr("id", btnID);
     tempButton.attr("data-correct", data);
     tempButton.text(str);
     // add the padding on both sides of the button
-    tempButtonWrap.prepend($("<div>").addClass("col"));
+    tempButtonWrap.append($("<div>").attr("class","col"));
     tempButtonWrap.append(tempButton);
-    tempButtonWrap.append($("<div>").addClass("col"));
+    tempButtonWrap.append($("<div>").attr("class","col"));
     return tempButtonWrap;
 }
 
@@ -99,7 +99,7 @@ function resetGame() {
     $("#title-area").empty();
     $("#message-area").empty();
     $("#buttons-area").empty();
-    $("#title-area").html("<h1 class='text-center'>Trivia Game</h1>");   
+    $("#title-area").html("<h1 class='text-center col'>Animal Facts!</h1>");   
     $("#message-area").html('<p>Welcome the to trivia game! Select your difficulty. </p>');
     for (var i=0; i<difficultySelect.length; i++){
         $("#buttons-area").append(generateButton(difficultySelect[i].name,"difficulty-button", i));
@@ -135,11 +135,10 @@ function nextQuestion() {
 function evaluateAnswer(answer=false) {
     (answer ? playerScore.correct += 1 : playerScore.wrong += 1);
     $("#message-area").empty();
-    $("#message-area").html(($("<h4>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
+    $("#message-area").html(($("<div>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
     $("#buttons-area").html(questions.curQuestion.blurb);
     setTimeout(nextQuestion, 3000);
-
 }
 
 function completeGame() {
