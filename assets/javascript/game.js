@@ -1,10 +1,9 @@
 
 // declare some variables
-var playerScore, curQuestion, questionsList;
+var playerScore, curQuestion, questionsList, questionsIndex;
 
 
-var questions;
-
+var questions, maxQuestions;
 
 
 var difficultySelect = [questionsBank, questionsBank2];
@@ -25,11 +24,21 @@ function shuffleArr(arr) {
     return arr;
 }
 
-function generateButton(str, btnClass, value=3){
-    return '<div class="row mt-3 bg-secondary"><div class="col"></div><div class="button btn-dark btn-lg col-10 p-3 '
-        + btnClass + '" value='
-        + value + '>' 
-        + str + '</div><div class="col"></div></div>';
+function generateButton(str, btnClass, data=false){
+    var tempButtonWrap = $("<div>").attr("class", "row mt-3 bg-secondary");
+    var tempButton = $("<div>").attr("class","button btn-dark btn-lg col-10 p-3");
+    tempButton.addClass(btnClass);
+    tempButton.attr("data-correct", data);
+    tempButton.text(str);
+    tempButtonWrap.prepend($("<div>").addClass("col"));
+    tempButtonWrap.append(tempButton);
+    tempButtonWrap.append($("<div>").addClass("col"));
+    return tempButtonWrap;
+
+    // return '<div class="row mt-3 bg-secondary"><div class="col"></div><div class="button btn-dark btn-lg col-10 p-3 '
+    //     + btnClass + '" data-correct='
+    //     + correct + '>' 
+    //     + str + '</div><div class="col"></div></div>';
 }
 
 function titleArea(str) {
@@ -53,23 +62,40 @@ function resetGame() {
         incorrect: 0,
         skipped: 0};
     questionsList = [];
+    questionsIndex = 0;
     titleArea("<h1 class='text-center'>Trivia Game</h1>");   
     messageArea('<p>Welcome the to trivia game! Select your difficulty. </p>');
-    var buttons = "";
     for (i=0; i<difficultySelect.length; i++){
-        buttons += generateButton(difficultySelect[i].name,"difficulty-button", i);
+        $("#buttons-area").append(generateButton(difficultySelect[i].name,"difficulty-button", i));
     }
-    buttonsArea(buttons)
     console.log("Game Reset");
 }
 
-// listen for clicks on the difficulty select buttons
-$("#buttons-area").on("click", ".difficulty-button", function () {
-    var currButton = $(this);
-    questionsList = difficultySelect[currButton.attr("value")].qList;
-    shuffleArr(questionsList);
-    console.log(questionsList);    
-}); 
+// find the next question in the array and display it
+function nextQuestion() {
+    var curQuestion = questionsList[questionsIndex];
+    console.log(curQuestion);
+    titleArea(curQuestion.q);
+    var tempArray
+    // for 
+    // buttonsArea()
+}
 
-// convert a question object into something that will add its own
-resetGame();
+// wait for the dom to finish loading before doing the work
+$(document).ready(function() {
+
+    resetGame();
+
+    // listen for clicks on the difficulty select buttons
+    $(document).on("click", ".difficulty-button", function () {
+        // save the this pointer in order to easily reference
+        var currButton = $(this);
+        // select the questions associated with the difficulty selected
+        questionsList = difficultySelect[parseInt(currButton.attr("data-correct"))].qList;
+        // // randomize the questions
+        shuffleArr(questionsList);
+        console.log(questionsList)
+        nextQuestion();
+    });
+
+});
