@@ -20,6 +20,7 @@ h2 {
     font-weight: bold;
 }
 
+/* this fixes the image so it doesn't stretch */
 img {
     width: auto;
     height: 100%;

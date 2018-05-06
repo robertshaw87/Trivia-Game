@@ -175,8 +175,7 @@ function evaluateAnswer(answer=false) {
     // display the correct answer along with a confirmation of whether the user answered correctly or incorrectly
     $("#message-area").html(($("<div>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
-    // create a new empty div
-
+    // add the info blurb to the buttons area
     $("#buttons-area").append(renderCurrentBlurb());
     // make a button that can pause the current countdown and look at the stuff on the solution page
     $("#message-area").append(generateButton("Pause", "next-button", false));
@@ -184,7 +183,9 @@ function evaluateAnswer(answer=false) {
     timeOut = setTimeout(nextQuestion, 8000);
 }
 
+// returns an card that has the little info blurb for the current question with the image on the right hand side
 function renderCurrentBlurb(){
+    // make an empty div
     var tempDiv = $("<div>");
     // make that div a card
     tempDiv.attr("class", "card text-white p-0 col-12 position-relative");
@@ -207,7 +208,7 @@ function pauseButton() {
     $("#buttons-area").append(renderCurrentBlurb());
     // make a button that can pause the current countdown and look at the stuff on the solution page
     $("#message-area").empty();
-    // display the correct answer along with a confirmation of whether the user answered correctly or incorrectly
+    // display the correct answer along with the botton to move onto the next question
     $("#message-area").html(($("<div>").attr("class", "text-center")).html("The correct answer was " + questions.curQuestion.a));
     $("#message-area").append(generateButton("Next Question", "next-button", true).addClass("pulse"));
 }
