@@ -20,6 +20,11 @@ h2 {
     font-weight: bold;
 }
 
+img {
+    width: auto;
+    height: 100%;
+}
+
 /* text font and translucent black for the main message area */
 #message-area {
     background-color: rgba(0,0,0,.5);

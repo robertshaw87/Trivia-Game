@@ -176,37 +176,40 @@ function evaluateAnswer(answer=false) {
     $("#message-area").html(($("<div>").attr("class", "text-center")).html((answer ? "You were right! " : "Better luck next time! ") + "The correct answer was " + questions.curQuestion.a));
     $("#buttons-area").empty();
     // create a new empty div
-    var tempDiv = $("<div>")
-    // make that div a card
-    tempDiv.attr("class", "card text-white p-0 col-12 position-relative")
-    // add the explanation text of the question from the questions object to our new div
-    tempDiv.append($("<div>").attr("class", "card-body").append($("<p>").attr("class", "").text(questions.curQuestion.blurb)));
-    // add the image from the questions obj
-    tempDiv.append($("<img>").attr("class", "card-img-bottom").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
-    // add new div to the display area
-    $("#buttons-area").append(tempDiv);
+
+    $("#buttons-area").append(renderCurrentBlurb());
     // make a button that can pause the current countdown and look at the stuff on the solution page
-    $("#buttons-area").append(generateButton("Pause", "next-button", false));
+    $("#message-area").append(generateButton("Pause", "next-button", false));
     // set the page to automatically move to the next question after 8 seconds
     timeOut = setTimeout(nextQuestion, 8000);
+}
+
+function renderCurrentBlurb(){
+    var tempDiv = $("<div>");
+    // make that div a card
+    tempDiv.attr("class", "card text-white p-0 col-12 position-relative");
+    // add the explanation text of the question from the questions object to our new div
+    var infoWrapper = $("<div>");
+    infoWrapper.addClass("row");
+    infoWrapper.append($("<div>").attr("class", "m-0 p-o col-12 col-md-6 col-lg-7").append($("<p>").attr("class","p-3").text(questions.curQuestion.blurb)));
+    // add the image from the questions obj
+    infoWrapper.append($("<img>").attr("class", "pr-4 mt-3 m-0 col-12 col-md-6 col-lg-5").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
+    // add new div to the display area
+    tempDiv.append(infoWrapper);
+    return tempDiv;
 }
 
 // remove the pause button into the next question button
 // this refreshes the info page in order to start an animation
 function pauseButton() {
     $("#buttons-area").empty();
-    // create a new empty div
-    var tempDiv = $("<div>")
-    // make that div a card
-    tempDiv.attr("class", "card text-white p-0 col-12 position-relative")
-    // add the explanation text of the question from the questions object to our new div
-    tempDiv.append($("<div>").attr("class", "card-body").append($("<p>").attr("class", "").text(questions.curQuestion.blurb)));
-    // add the image from the questions obj
-    tempDiv.append($("<img>").attr("class", "card-img-bottom").attr("src", questions.curQuestion.img).attr("alt", questions.curQuestion.a).attr("width", "100%").attr("height", "auto"));
-    // add new div to the display area
-    $("#buttons-area").append(tempDiv);
+    // render the current info blurb to the display area
+    $("#buttons-area").append(renderCurrentBlurb());
     // make a button that can pause the current countdown and look at the stuff on the solution page
-    $("#buttons-area").append(generateButton("Next Question", "next-button", true).addClass("pulse"));
+    $("#message-area").empty();
+    // display the correct answer along with a confirmation of whether the user answered correctly or incorrectly
+    $("#message-area").html(($("<div>").attr("class", "text-center")).html("The correct answer was " + questions.curQuestion.a));
+    $("#message-area").append(generateButton("Next Question", "next-button", true).addClass("pulse"));
 }
 
 // logic for when the game finishes
@@ -256,7 +259,10 @@ $(document).ready(function() {
     $(document).on("click", ".answer-button", function () {
         var currButton = $(this);
         timer.stop();
+        console.log(typeof currButton.data("correct"));
+        console.log(typeof currButton.attr("data-correct"));
         evaluateAnswer(currButton.data("correct"));
+
     });
 
     // either remove the timeout procedure or move on to the next question when clicked
