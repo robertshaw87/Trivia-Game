@@ -34,6 +34,10 @@ No installation needed! Just open the page in your preferred browser.
 
 * [Google Fonts](https://fonts.google.com/) - Font repository
 
+## Challenges
+
+By this point dynamically generating HTML elements is almost second nature. Familiarizing myself with the setTimeout and setInterval functions, however, lead to some interesting challenges. In the end, keeping careful track of my pointers and keeping a tight grip on when code is actually run solved most of my issues. Also, I learned that something as simple as making an image smaller and displaying it as an inline element really helped bring the entire webpage together.
+
 ## Authors
 
 * **Robert Shaw** - *Initial work* - [robertshaw87](https://github.com/robertshaw87)
