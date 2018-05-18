@@ -6,7 +6,7 @@ How much do you know about our friends in the animal kingdom? From man's best fr
 
 Open up the [project link](https://robertshaw87.github.io/Trivia-Game/) and you should be able to see the example webpage shown below:
 
-![Animal Facts!](assets/images/readme-game.PNG "Animal Facts!")
+![Animal Facts!](assets/images/readme-game.png "Animal Facts!")
 
 Select the difficulty of the questions you want to tackle. Then answer the quiz to the best of your ability and see how well you did. Keep the time limit in mind!
 
